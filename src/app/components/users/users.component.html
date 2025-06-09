@@ -1,0 +1,76 @@
+<div class="container">
+
+    <div class="user-container">
+
+        <ng-container *ngIf="usersListComplete && searchListComplete; else loading ">
+
+            <div class="search-bar">
+                <form>
+                    <mat-form-field class="search-input">
+                        <mat-label>Search</mat-label>
+                        <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                            [formControl]="searchInput" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            @for (option of filteredOptions | async; track option) {
+                            <mat-option [value]="option.id.toString()">{{option?.id}} {{option?.name}}</mat-option>
+                            }
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <button (click)="submitSearch()" mat-flat-button class="search-button">Basic</button>
+                </form>
+            </div>
+
+        </ng-container>
+        <ng-template #loading>
+            <div class="loading">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+        </ng-template>
+
+        <ng-container *ngIf="usersListComplete && searchListComplete">
+            <div class="user-list">
+                <table mat-table [dataSource]="filteredUser" class="mat-elevation-z8">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+
+                    <!-- Gender Column -->
+                    <ng-container matColumnDef="gender">
+                        <th mat-header-cell *matHeaderCellDef> Gender </th>
+                        <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                    </ng-container>
+
+                    <!-- Age Column -->
+                    <ng-container matColumnDef="age">
+                        <th mat-header-cell *matHeaderCellDef> Age </th>
+                        <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+                    </ng-container>
+
+                    <!-- Country Column -->
+                    <ng-container matColumnDef="country">
+                        <th mat-header-cell *matHeaderCellDef> country </th>
+                        <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+                    </ng-container>
+
+                    <!-- Header and Row Definitions -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                </table>
+
+
+
+            </div>
+        </ng-container>
+    </div>
+</div>

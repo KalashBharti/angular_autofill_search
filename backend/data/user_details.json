@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Storm", "gender": "male", "age": 23, "country": "India" },
+  { "id": 2, "name": "Aryan", "gender": "male", "age": 25, "country": "India" },
+  { "id": 3, "name": "Meera", "gender": "female", "age": 22, "country": "India" },
+  { "id": 4, "name": "Ravi", "gender": "male", "age": 24, "country": "India" },
+  { "id": 5, "name": "Aisha", "gender": "female", "age": 23, "country": "USA" },
+  { "id": 6, "name": "Carlos", "gender": "male", "age": 28, "country": "Mexico" },
+  { "id": 7, "name": "Emma", "gender": "female", "age": 21, "country": "USA" },
+  { "id": 8, "name": "Kenji", "gender": "male", "age": 26, "country": "Japan" },
+  { "id": 9, "name": "Fatima", "gender": "female", "age": 24, "country": "UAE" },
+  { "id": 10, "name": "Liam", "gender": "male", "age": 27, "country": "Canada" }
+]
