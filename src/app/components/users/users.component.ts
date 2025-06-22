@@ -53,8 +53,8 @@ export class UsersComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'gender', 'age', 'country'];
 
 
-  private fetchSearchList(): void {
-    this.searchService.getSearchList().subscribe({
+  private  fetchSearchList(): void {
+     this.searchService.getSearchList().subscribe({
       next: (data: SearchData[]) => {
         this.searchData = data;
       },

@@ -1,0 +1,83 @@
+<div class="container">
+
+    <div class="client-container">
+
+        <form class="form" (ngSubmit)="onSubmitFormGroup()" [formGroup]="formGroup">
+            <mat-form-field class="client-search">
+                <mat-label>Client Name </mat-label>
+                <input type="text" matInput [formControl]="clientNameInput" [matAutocomplete]="auto">
+                <ng-container *ngIf="loading">
+                    loading...
+                </ng-container>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+
+                    @for (option of filteredOptions | async; track option.id) {
+                    <mat-option [value]="option">{{option.clientName}} id:{{option.id}}</mat-option>
+                    }
+                    @empty {
+
+                    <mat-option *ngIf="!loading" disabled>No options</mat-option>
+                    }
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Client Id</mat-label>
+                <input type="number" matInput placeholder="Enter client Id" [formControl]="clientId">
+            </mat-form-field>
+            <button mat-fab aria-label="Example icon button with a delete icon">
+                <mat-icon>search</mat-icon>
+            </button>
+        </form>
+
+     
+
+        <ng-container *ngIf="!clientListLoading; else loadingList ">
+        <div class="table">
+
+
+            <table mat-table [dataSource]="clientData" class="mat-elevation-z8">
+
+                <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.clientName}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="Gender">
+                    <th mat-header-cell *matHeaderCellDef> Gender </th>
+                    <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="City">
+                    <th mat-header-cell *matHeaderCellDef> City </th>
+                    <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="State">
+                    <th mat-header-cell *matHeaderCellDef>State </th>
+                    <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Country">
+                    <th mat-header-cell *matHeaderCellDef>Country </th>
+                    <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        </ng-container>
+        <ng-template #loadingList>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+
+        </ng-template>
+    </div>
+</div>
