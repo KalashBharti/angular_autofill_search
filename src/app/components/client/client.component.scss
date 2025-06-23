@@ -48,11 +48,21 @@
     overflow-y: auto;
 }
 
-.form{
+.form-inputs{
     display: flex;
  
     gap: 1rem;
     width: 100%;
+}
+
+.form-errors{
+    
+    display: flex;
+    justify-content: end;;
+    color: red;
+    font-size: 0.8rem;
+    width: 40%;
+   
 }
 .client-search{
     width: 40%;

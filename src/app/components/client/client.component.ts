@@ -12,10 +12,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { ClientListApi } from '../../services/client-list-api.service';
 import ClientList from '../../models/client_search_list';
-import { clientNameValidator } from '../../services/name-validator.service';
 import { ClientDetailsApiService } from '../../services/client-details-api.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { formValidation } from '../../services/validation/formvalidation.service';
 
 
 @Component({
@@ -33,29 +33,45 @@ export class ClientComponent implements OnInit {
   clientListLoading: boolean = false;
   loading: boolean = false;
 
-  clientNameInput = new FormControl<string | ClientList>('', [Validators.required, clientNameValidator]);
-  clientId = new FormControl<number | undefined>(undefined, [Validators.pattern(/^\d{4}$/)]);
-  
+
   filteredOptions: Observable<ClientList[]>;
 
   private clientListApi = inject(ClientListApi);
   private clientDataApi = inject(ClientDetailsApiService);
- 
+
   clientData: ClientList[] = [];
   displayedColumns: string[] = ['Name', 'Gender', 'City', 'State', 'Country'];
- 
-  formGroup = new FormGroup(
-    {
-      clientName: this.clientNameInput,
-      clientId: this.clientId
-    }
-  );
+
+  // clientNameInput = new FormControl<string | ClientList>('', [Validators.required, clientNameValidator]);
+  // clientId = new FormControl<number | undefined>(undefined, [Validators.pattern(/^\d{4}$/)]);
+
+  formGroup!: FormGroup;
+  // formGroup = new FormGroup(
+  //   {
+  //     clientName: this.clientNameInput,
+  //     clientId: this.clientId
+  //   }
+  // );
 
 
   ngOnInit() {
+
+    this.formGroup = new FormGroup(
+      {
+        clientName: new FormControl<string | ClientList>(''),
+        clientId: new FormControl<number | null>(null)
+      },
+      { validators: formValidation }
+    );
+
     this.getClient(" ", null); // Initial call to fetch all clients
-    
-    this.filteredOptions = this.clientNameInput.valueChanges.pipe(
+
+    this.searchClientList();
+
+  }
+
+  searchClientList(): void {
+    this.filteredOptions = this.formGroup.get("clientName")!.valueChanges.pipe(
       startWith(''),
       debounceTime(300),            // avoids spamming backend
       distinctUntilChanged(),       // skips if value didn’t change
@@ -93,7 +109,6 @@ export class ClientComponent implements OnInit {
         this.clientListLoading = false;
       },
       error: (error) => {
-        alert('Failed to fetch client data. Please try again later.');
         this.clientListLoading = false;
       },
 
@@ -101,10 +116,12 @@ export class ClientComponent implements OnInit {
   }
 
   onSubmitFormGroup() {
+    console.log(this.formGroup.valid, this.formGroup);
     if (this.formGroup.invalid) {
-      alert("Please enter required fields properly.");
+      this.formGroup.markAllAsTouched();
       return;
     }
+
     const clientNameInput = this.formGroup.value.clientName;
     let clientName = '';
     if (typeof clientNameInput === 'string') {

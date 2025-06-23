@@ -2,32 +2,40 @@
 
     <div class="client-container">
 
-        <form class="form" (ngSubmit)="onSubmitFormGroup()" [formGroup]="formGroup">
-            <mat-form-field class="client-search">
-                <mat-label>Client Name </mat-label>
-                <input type="text" matInput [formControl]="clientNameInput" [matAutocomplete]="auto">
-                <ng-container *ngIf="loading">
-                    loading...
-                </ng-container>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <form  (ngSubmit)="onSubmitFormGroup()" [formGroup]="formGroup">
+            <div class="form-inputs">
 
-                    @for (option of filteredOptions | async; track option.id) {
-                    <mat-option [value]="option">{{option.clientName}} id:{{option.id}}</mat-option>
-                    }
-                    @empty {
+                <mat-form-field class="client-search">
+                    <mat-label>Client Name </mat-label>
+                    <input type="text" matInput formControlName="clientName" [matAutocomplete]="auto">
+                    <ng-container *ngIf="loading">
+                        loading...
+                    </ng-container>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                        
+                        @for (option of filteredOptions | async; track option.id) {
+                            <mat-option [value]="option">{{option.clientName}} id:{{option.id}}</mat-option>
+                        }
+                        @empty {
+                            
+                            <mat-option *ngIf="!loading" disabled>No options</mat-option>
+                        }
+                    </mat-autocomplete>
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <mat-label>Client Id</mat-label>
+                    <input type="number" matInput placeholder="Enter client Id" formControlName="clientId">
+                </mat-form-field>
+                <button mat-fab aria-label="Example icon button with a delete icon">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </div>
 
-                    <mat-option *ngIf="!loading" disabled>No options</mat-option>
-                    }
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field>
-                <mat-label>Client Id</mat-label>
-                <input type="number" matInput placeholder="Enter client Id" [formControl]="clientId">
-            </mat-form-field>
-            <button mat-fab aria-label="Example icon button with a delete icon">
-                <mat-icon>search</mat-icon>
-            </button>
+            <div *ngIf="this.formGroup.invalid  " class="form-errors">
+                <span *ngIf="this.formGroup.get('clientName')?.invalid && this.formGroup.get('clientName')?.touched">Enter Client name (more then 3 letters or equal)</span>
+                <span *ngIf="this.formGroup.get('clientId')?.invalid">Enter Client Id (must be a number)</span>
+            </div>
         </form>
 
      
