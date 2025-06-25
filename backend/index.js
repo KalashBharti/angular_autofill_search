@@ -68,6 +68,23 @@ app.post('/client-details', (req, res) => {
     }, 1500)
 
 })
+// temporary storage for users
+const users =[];
+app.post('/register-user',(req, res)=>{
+    const {email} = req.body;
+    console.log(req.body);
+    
+    const exist = users.filter(user=> user.email === email);
+    if(exist.length > 0){
+        res.status(400);
+        res.json({success:false, message : 'User already exists with this email.'});
+    }
+    else{
+        
+        users.push(req.body);
+        res.json({success:true, message : 'User registered successfully.'});
+    }
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

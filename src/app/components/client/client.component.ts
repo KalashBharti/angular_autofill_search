@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, map, startWith, switchMap } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
@@ -45,7 +45,7 @@ export class ClientComponent implements OnInit {
   // clientNameInput = new FormControl<string | ClientList>('', [Validators.required, clientNameValidator]);
   // clientId = new FormControl<number | undefined>(undefined, [Validators.pattern(/^\d{4}$/)]);
 
-  formGroup!: FormGroup;
+  formGroup: FormGroup;
   // formGroup = new FormGroup(
   //   {
   //     clientName: this.clientNameInput,
@@ -53,10 +53,12 @@ export class ClientComponent implements OnInit {
   //   }
   // );
 
+  constructor(private formBuilder: FormBuilder){
+  }
 
   ngOnInit() {
 
-    this.formGroup = new FormGroup(
+    this.formGroup = this.formBuilder.group(
       {
         clientName: new FormControl<string | ClientList>(''),
         clientId: new FormControl<number | null>(null)
