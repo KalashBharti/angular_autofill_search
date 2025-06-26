@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import RegisterUserModel from '../models/register_user';
+import {RegisterUserModel} from '../components/register-user/register_user.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({

@@ -78,6 +78,7 @@ app.post('/register-user',(req, res)=>{
     if(exist.length > 0){
         res.status(400);
         res.json({success:false, message : 'User already exists with this email.'});
+    
     }
     else{
         

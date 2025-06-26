@@ -1,119 +1,116 @@
 <div class="container">
-
     <div class="form-container">
-
         <h1>Register User</h1>
 
         <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-            @if(this.formSubmissionStatus){
-
-            <div class="notification" [ngClass]="this.formSubmissionStatus.success ? 'success' : 'fail'">
+            <div *ngIf="this.formSubmissionStatus" class="notification"
+                [ngClass]="this.formSubmissionStatus.success ? 'success' : 'fail'">
                 {{this.formSubmissionStatus.message}}
             </div>
 
-            }
             <div class="row">
                 <div class="input-box">
-
                     <label>Title*</label>
 
                     <mat-form-field>
-
                         <mat-select placeholder="Select Option" formControlName="title" required>
                             <mat-option>--</mat-option>
-                            @for (title of this.titles; track title) {
-                            <mat-option [value]="title">{{title}}</mat-option>
-                            }
+
+                            <mat-option *ngFor="let title of this.titles" [value]="title">{{title}}</mat-option>
                         </mat-select>
-
-
                     </mat-form-field>
-                    @if(this.formGroup.get("title")?.invalid&&this.formGroup.get("title")?.touched){
 
-                    <mat-error>Please choose a title</mat-error>
-                    }
+                    <mat-error *ngIf="this.formGroup.get('title')?.invalid&&this.formGroup.get('title')?.touched">Please
+                        choose a title</mat-error>
                 </div>
+
                 <div class="input-box width30per">
                     <label>First Name*</label>
+
                     <mat-form-field class="name-input">
                         <span>
                             <input formControlName="firstName" matInput placeholder="Enter first name">
                         </span>
-
                     </mat-form-field>
 
-                    @if(this.formGroup.get("firstName")?.invalid && this.formGroup.get("firstName")?.touched){
-                    @if(this.formGroup.get("firstName")?.hasError("required")){
-                    <mat-error>First Name is required</mat-error>
-                    }
-                    @else {
-                    <mat-error>First Name must contain only character and space.</mat-error>
-                    }
-                    }
+                    <mat-error
+                        *ngIf="this.formGroup.get('firstName')?.invalid && this.formGroup.get('firstName')?.touched">
+                        <span *ngIf="this.formGroup.get('firstName')?.hasError('required')">First Name is
+                            required</span>
 
+                        <span *ngIf="this.formGroup.get('firstName')?.hasError('pattern')">First Name must contain only
+                            character and space.</span>
+                    </mat-error>
                 </div>
+
                 <div class="input-box width30per">
                     <label>Last Name*</label>
+
                     <mat-form-field class="name-input">
                         <input formControlName="lastName" matInput placeholder="Enter last name">
                     </mat-form-field>
-                    @if(this.formGroup.get("lastName")?.invalid && this.formGroup.get("lastName")?.touched){
-                    @if(this.formGroup.get("lastName")?.hasError("required")){
-                    <mat-error>Last Name is required</mat-error>
-                    }
-                    @else {
-                    <mat-error>Last Name must contain only character and space.</mat-error>
-                    }
-                    }
+
+                    <mat-error
+                        *ngIf="this.formGroup.get('lastName')?.invalid && this.formGroup.get('lastName')?.touched">
+                        <span *ngIf="this.formGroup.get('lastName')?.hasError('required')">First Name is required</span>
+
+                        <span *ngIf="this.formGroup.get('lastName')?.hasError('pattern')">First Name must contain only
+                            character and space.</span>
+                    </mat-error>
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-box">
                     <label>DOB*</label>
+
                     <mat-form-field>
                         <input formControlName="dob" matInput [matDatepicker]="picker" placeholder="dd/mm/yyyy">
 
                         <mat-datepicker-toggle matIconPrefix [for]="picker"></mat-datepicker-toggle>
+
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
-                    @if(this.formGroup.get("dob")?.invalid&& this.formGroup.get("dob")?.touched){
-                    <mat-error>Date of birth is required</mat-error>
-                    }
+
+                    <mat-error *ngIf="this.formGroup.get('dob')?.invalid && this.formGroup.get('dob')?.touched">Date of
+                        birth is required</mat-error>
                 </div>
 
                 <div class="input-box">
                     <label>Gender*</label>
-                    <mat-button-toggle-group formControlName="gender" hideSingleSelectionIndicator="false"
-                        class="button-toggle" name="fontStyle" aria-label="Font Style">
+
+                    <mat-button-toggle-group formControlName="gender" (focusout)="formGroup.get('gender')?.markAsTouched()"
+                        hideSingleSelectionIndicator="false" class="button-toggle" name="fontStyle"
+                        aria-label="Font Style">
                         <mat-button-toggle class="toggle-option" value="m">Male</mat-button-toggle>
+
                         <mat-button-toggle value="f">Female</mat-button-toggle>
-
                     </mat-button-toggle-group>
-                    @if(this.formGroup.get("gender")?.invalid && this.formGroup.get("gender")?.touched){
 
-                    <mat-error style="margin: 0;">Must select one gender</mat-error>
-                    }
+                    <mat-error *ngIf="this.formGroup.get('gender')?.invalid && this.formGroup.get('gender')?.touched"
+                        style="margin: 0;">Must select one gender</mat-error>
                 </div>
 
                 <div class="input-box width30per">
                     <label>Email*</label>
+
                     <mat-form-field type="email" class="name-input">
                         <input formControlName="email" type="email" matInput placeholder="Enter last name">
                     </mat-form-field>
-                    @if(this.formGroup.get("email")?.invalid && this.formGroup.get("email")?.touched){
-                    @if(this.formGroup.get("email")?.hasError("required")){
-                    <mat-error>Email is required</mat-error>
-                    }
-                    @else {
-                    <mat-error>Must be in proper email formate</mat-error>
-                    }
-                    }
+
+                    <mat-error *ngIf="this.formGroup.get('email')?.invalid && this.formGroup.get('email')?.touched">
+                        <span *ngIf="this.formGroup.get('email')?.hasError('required')">Email is required</span>
+
+                        <span *ngIf="this.formGroup.get('email')?.hasError('email')">Must be in proper email
+                            formate</span>
+                    </mat-error>
                 </div>
             </div>
+
             <div>
                 <button type="submit" class="form-button" mat-stroked-button>Register</button>
-                <button class="form-button cancel-button" mat-stroked-button>Cancel</button>
+
+                <button type="button" [routerLink]="'/'" class="form-button cancel-button" mat-stroked-button>Cancel</button>
             </div>
         </form>
     </div>
